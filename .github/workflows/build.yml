@@ -15,21 +15,18 @@ jobs:
       - name: Install dependencies
         run: sudo apt-get update && sudo apt-get install -y automake libtool pkg-config gcc libglib2.0-dev libssl-dev libncurses5-dev
 
-      - name: List files to debug path issues
+      - name: Show directory contents (diagnostic)
         run: ls -l
 
-      - name: Run autogen.sh (if exists)
+      - name: Configure (if exists)
         run: |
-          if [ -f ./autogen.sh ]; then
-            chmod +x ./autogen.sh
-            ./autogen.sh
+          if [ -f ./configure ]; then
+            chmod +x ./configure
+            ./configure
           else
-            echo "autogen.sh not found!"
+            echo "Brak pliku configure – przerwano build."
             exit 1
           fi
-
-      - name: Configure
-        run: ./configure
 
       - name: Build irssi
         run: make
