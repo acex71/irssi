@@ -15,13 +15,25 @@ jobs:
       - name: Install dependencies
         run: sudo apt-get update && sudo apt-get install -y automake libtool pkg-config gcc libglib2.0-dev libssl-dev libncurses5-dev
 
-      - name: Build irssi
-        run: |
-          ./autogen.sh
-          ./configure
-          make
+      - name: List files to debug path issues
+        run: ls -l
 
-      # (opcjonalnie) Załącz build artefakt
+      - name: Run autogen.sh (if exists)
+        run: |
+          if [ -f ./autogen.sh ]; then
+            chmod +x ./autogen.sh
+            ./autogen.sh
+          else
+            echo "autogen.sh not found!"
+            exit 1
+          fi
+
+      - name: Configure
+        run: ./configure
+
+      - name: Build irssi
+        run: make
+
       - name: Upload binary
         uses: actions/upload-artifact@v4
         with:
